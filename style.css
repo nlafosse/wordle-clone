@@ -76,3 +76,34 @@ body {
   padding: 10px;
   margin: 0;
 }
+
+.tile.flip {
+  animation: 0.5s linear tileflip;
+}
+
+@keyframes tileflip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.yellow-overlay {
+  background-color: #d3e43b !important;
+  border: none !important;
+}
+
+.grey-overlay {
+  background-color: #c0bbb9 !important;
+  border: none !important;
+}
+
+.green-overlay {
+  background-color: #3eac34 !important;
+  border: none !important;
+}
