@@ -73,13 +73,39 @@ keys.forEach((key) => {
 
 const handleClick = (key) => {
   console.log("clicked", key);
+  if (key === "≪") {
+    console.log("delete letter");
+    deleteLetter();
+    return;
+  }
+  if (key === "ENTER") {
+    console.log("check row");
+    return;
+  }
   addLetter(key);
 };
 
 const addLetter = (letter) => {
-  const tile = document.getElementById(
-    "guessRow-" + currentRow + "-tile-" + currentTile
-  );
-  console.log(letter);
-  tile.textContent = letter;
+  if (currentTile < 5 && currentRow < 6) {
+    const tile = document.getElementById(
+      "guessRow-" + currentRow + "-tile-" + currentTile
+    );
+    tile.textContent = letter;
+    guessRows[currentRow][currentTile] = letter;
+    tile.setAttribute("data", letter);
+    currentTile++;
+    console.log("guessRows", guessRows);
+  }
+};
+
+const deleteLetter = () => {
+  if (currentTile > 0) {
+    currentTile--;
+    const tile = document.getElementById(
+      "guessRow-" + currentRow + "-tile-" + currentTile
+    );
+    tile.textContent = "";
+    guessRows[currentRow][currentTile] = "";
+    tile.setAttribute("data", "");
+  }
 };
