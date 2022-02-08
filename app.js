@@ -1,8 +1,24 @@
+// display elements
 const tileDisplay = document.querySelector(".tile-container");
-const keyboard = document.querySelector(".key-container");
+const keyboardDisplay = document.querySelector(".key-container");
 const messageDisplay = document.querySelector(".message-container");
 
+// for testing
 const wordle = "SUPER";
+
+// variables
+let currentRow = 0;
+let currentTile = 0;
+let isGameOver = false;
+
+const rows = [
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+];
 
 const keys = [
   "Q",
@@ -35,53 +51,35 @@ const keys = [
   "≪",
 ];
 
-const guessRows = [
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-];
-
-let currentRow = 0;
-let currentTile = 0;
-let isGameOver = false;
-
-guessRows.forEach((guessRow, guessRowIndex) => {
+// iterate and create each element
+rows.forEach((row, rowIndex) => {
   const rowElement = document.createElement("div");
-  rowElement.setAttribute("id", "guessRow-" + guessRowIndex);
+  rowElement.setAttribute("id", "row" + rowIndex);
 
-  guessRow.forEach((guess, guessIndex) => {
+  row.forEach((guess, guessIndex) => {
     const tileElement = document.createElement("div");
-    tileElement.setAttribute(
-      "id",
-      "guessRow-" + guessRowIndex + "-tile-" + guessIndex
-    );
+    tileElement.setAttribute("id", "row" + rowIndex + "tile" + guessIndex);
     tileElement.classList.add("tile");
     rowElement.append(tileElement);
   });
-
   tileDisplay.append(rowElement);
 });
 
 keys.forEach((key) => {
-  const buttonElement = document.createElement("button");
-  buttonElement.textContent = key;
-  buttonElement.setAttribute("id", key);
-  buttonElement.addEventListener("click", () => handleClick(key));
-  keyboard.append(buttonElement);
+  const keyElement = document.createElement("button");
+  keyElement.textContent = key;
+  keyElement.setAttribute("id", key);
+  keyElement.addEventListener("click", () => handleClick(key));
+  keyboardDisplay.append(keyElement);
 });
 
+//functions
 const handleClick = (key) => {
-  console.log("clicked", key);
   if (key === "≪") {
-    console.log("delete letter");
     deleteLetter();
     return;
   }
   if (key === "Enter") {
-    console.log("check row");
     checkRow();
     return;
   }
@@ -91,13 +89,13 @@ const handleClick = (key) => {
 const addLetter = (letter) => {
   if (currentTile < 5 && currentRow < 6) {
     const tile = document.getElementById(
-      "guessRow-" + currentRow + "-tile-" + currentTile
+      "row" + currentRow + "tile" + currentTile
     );
     tile.textContent = letter;
-    guessRows[currentRow][currentTile] = letter;
+    rows[currentRow][currentTile] = letter;
     tile.setAttribute("data", letter);
     currentTile++;
-    console.log("guessRows", guessRows);
+    console.log("rows", rows);
   }
 };
 
@@ -105,16 +103,16 @@ const deleteLetter = () => {
   if (currentTile > 0) {
     currentTile--;
     const tile = document.getElementById(
-      "guessRow-" + currentRow + "-tile-" + currentTile
+      "row" + currentRow + "tile" + currentTile
     );
     tile.textContent = "";
-    guessRows[currentRow][currentTile] = "";
+    rows[currentRow][currentTile] = "";
     tile.setAttribute("data", "");
   }
 };
 
 const checkRow = () => {
-  const guess = guessRows[currentRow].join("");
+  const guess = rows[currentRow].join("");
 
   if (currentTile > 4) {
     console.log("guessed:", guess);
@@ -151,22 +149,23 @@ const addColorToKey = (keyLetter, color) => {
 };
 
 const flipTile = () => {
-  const rowTiles = document.querySelector("#guessRow-" + currentRow).childNodes;
+  const rowTiles = document.querySelector("#row" + currentRow).childNodes;
   rowTiles.forEach((tile, index) => {
     const dataLetter = tile.getAttribute("data");
 
     setTimeout(() => {
+      // add flip css effects
       tile.classList.add("flip");
 
       if (dataLetter == wordle[index]) {
-        tile.classList.add("green-overlay");
-        addColorToKey(dataLetter, "green-overlay");
+        tile.classList.add("green");
+        addColorToKey(dataLetter, "green");
       } else if (wordle.includes(dataLetter)) {
-        tile.classList.add("yellow-overlay");
-        addColorToKey(dataLetter, "yellow-overlay");
+        tile.classList.add("yellow");
+        addColorToKey(dataLetter, "yellow");
       } else {
-        tile.classList.add("grey-overlay");
-        addColorToKey(dataLetter, "grey-overlay");
+        tile.classList.add("grey");
+        addColorToKey(dataLetter, "grey");
       }
     }, 500 * index);
   });
