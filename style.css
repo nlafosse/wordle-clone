@@ -89,6 +89,18 @@ body {
 }
 
 @keyframes tileflip {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-80deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+/* @keyframes winnerCheer {
   0%,
   20% {
     transform: rotateX(0);
@@ -106,9 +118,9 @@ body {
     transform: translateY(2px);
   }
   100% {
-    transform: rotatey(0);
+    transform: rotateY(0);
   }
-}
+} */
 
 .yellow {
   background-color: #d3e43b !important;
